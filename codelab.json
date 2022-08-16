@@ -1,0 +1,21 @@
+{
+  "environment": "web",
+  "format": "html",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-49880327-14",
+  "updated": "2022-08-16T11:52:45Z",
+  "id": "mdc-102-flutter",
+  "duration": 0,
+  "title": "MDC-102 Flutter:Material Structure and Layout",
+  "authors": "Kenichi Tatsuhama",
+  "summary": "https://codelabs.developers.google.com/codelabs/mdc-102-flutter の日本語版",
+  "source": "1SJW0fqwoxqkViMCGlFOkgOuWTRGlOjr_wlJiDL3qhW4",
+  "theme": "",
+  "status": [
+    "published"
+  ],
+  "category": [],
+  "tags": [],
+  "feedback": "https://twitter.com/tatsuhama50",
+  "url": "mdc-102-flutter"
+}

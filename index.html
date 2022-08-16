@@ -1,0 +1,507 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>MDC-102 Flutter:Material Structure and Layout</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/codelab-elements/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
+  <google-codelab codelab-gaid=""
+                  id="mdc-102-flutter"
+                  title="MDC-102 Flutter:Material Structure and Layout"
+                  environment="web"
+                  feedback-link="https://twitter.com/tatsuhama50">
+    
+      <google-codelab-step label="はじめに" duration="0">
+        <p>マテリアル コンポーネント (MDC) は、開発者がマテリアル デザインを実装するのに役立ちます。 Google のエンジニアと UX デザイナーのチームによって作成された MDC は、多数の美しく機能的な UI コンポーネントを備えており、Android、iOS、ウェブ、および Flutter.material.io/develop で利用できます。</p>
+<p>Codelab MDC-101 では、2 つのマテリアル コンポーネントを使用してログイン ページを作成しました。テキスト フィールドとインクの波紋のあるボタンです。 次に、ナビゲーション、構造、およびデータを追加して、この基盤を拡張しましょう。</p>
+<h2 is-upgraded><strong>構築するもの</strong></h2>
+<p>この Codelab では、衣料品や家庭用品を販売する e コマース アプリ、Shrine というアプリのホーム画面を作成します。 以下が含まれます。</p>
+<ul>
+<li>トップアプリバー</li>
+<li>製品でいっぱいのグリッドリスト</li>
+</ul>
+<table>
+<tr><td colspan="1" rowspan="1"><p>Android</p>
+</td><td colspan="1" rowspan="1"><p>iOS</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p class="image-container"><img style="width: 298.00px" src="img/219fcb9db8bad064.png"></p>
+</td><td colspan="1" rowspan="1"><p class="image-container"><img style="width: 298.00px" src="img/dd79d882e2422adb.png"></p>
+</td></tr>
+</table>
+<aside class="special"><table>
+<tr><td colspan="1" rowspan="1"><p>これは、Shrine というプロダクト用のアプリの作成をガイドする 4 つの Codelab の 2 つ目です。</p>
+<p>すべての Codelab は、タスクを段階的に進めながら順番に実行することをお勧めします。関連する Codelab は次の場所にあります。</p>
+<ul>
+<li><a href="https://codelabs.developers.google.com/codelabs/mdc-101-flutter" target="_blank">MDC-101 フラッター: マテリアル コンポーネント (MDC) の基本</a></li>
+<li><a href="https://codelabs.developers.google.com/codelabs/mdc-103-flutter" target="_blank">MDC-103 Flutter: 色、形状、高さ、およびタイプによるマテリアル テーマ</a></li>
+<li><a href="https://codelabs.developers.google.com/codelabs/mdc-104-flutter" target="_blank">MDC-104 Flutter: マテリアルの高度なコンポーネント</a></li>
+</ul>
+</td><td colspan="1" rowspan="1"><p class="image-container"><img style="width: 290.00px" src="img/91be5f7919ab5154.png"></p>
+</td></tr>
+</table>
+</aside>
+<h2 is-upgraded><strong>この Codelab の MDC-Flutter コンポーネントとサブシステム</strong></h2>
+<ul>
+<li>トップアプリバー</li>
+<li>グリッド</li>
+<li>カード</li>
+</ul>
+<aside class="special"><p>この Codelab では、MDC-Flutter が提供するデフォルト コンポーネントを使用します。 それらをカスタマイズする方法については、<a href="https://codelabs.developers.google.com/codelabs/mdc-103-flutter" target="_blank">MDC-103: 色、形状、高さ、およびタイプを使用したマテリアル デザインのテーマ</a>で学習します。</p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Flutter 開発環境をセットアップする" duration="0">
+        <p>このラボを完了するには、<a href="https://docs.flutter.dev/get-started/install" target="_blank">Flutter SDK</a> と<a href="https://docs.flutter.dev/get-started/editor" target="_blank">エディタ</a>の 2 つのソフトウェアが必要です。</p>
+<p>次のいずれかのデバイスを使用して Codelab を実行できます。</p>
+<ul>
+<li>コンピューターに接続され、開発者モードに設定されている物理的な <a href="https://docs.flutter.dev/get-started/install/macos#android-setup" target="_blank">Android</a> または <a href="https://docs.flutter.dev/get-started/install/macos#deploy-to-ios-devices" target="_blank">iOS</a> デバイス。</li>
+<li><a href="https://docs.flutter.dev/get-started/install/macos#set-up-the-ios-simulator" target="_blank">iOS シミュレーター</a> (Xcode ツールのインストールが必要)。</li>
+<li><a href="https://docs.flutter.dev/get-started/install/macos#set-up-the-android-emulator" target="_blank">Android Emulator</a> (Android Studio でのセットアップが必要)。</li>
+<li>ブラウザー (デバッグには Chrome が必要です)。</li>
+<li><a href="https://docs.flutter.dev/get-started/install/windows#windows-setup" target="_blank">Windows</a>、<a href="https://docs.flutter.dev/get-started/install/linux#linux-setup" target="_blank">Linux</a>、または <a href="https://docs.flutter.dev/get-started/install/macos#macos-setup" target="_blank">macOS</a> デスクトップ アプリケーションとして。 展開する予定のプラットフォームで開発する必要があります。 そのため、Windows デスクトップ アプリを開発する場合は、適切なビルド チェーンにアクセスするために Windows で開発する必要があります。 <a href="https://docs.flutter.dev/desktop" target="_blank">docs.flutter.dev/desktop</a> で詳しく説明されているオペレーティング システム固有の要件があります。</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Codelab スターター アプリをダウンロードする" duration="0">
+        <h2 is-upgraded><br><strong>MDC-101の続き？</strong></h2>
+<p>MDC-101 を完了している場合は、コードをこの Codelab 用に準備する必要があります。 </p>
+<p>手順にスキップ: トップ アプリ バーを追加します。</p>
+<h2 is-upgraded><strong>ゼロから始める？</strong></h2>
+<p><br>Zip ダウンロード or Git Clone のどちらかの方法でダウンロードを行って下さい。</p>
+<h2 is-upgraded><strong>Zip ダウンロード</strong></h2>
+<p><a href="https://github.com/material-components/material-components-flutter-codelabs/archive/101-starter.zip" target="_blank">Download starter project</a></p>
+<p>スターター プロジェクトは、material-components-flutter-codelabs-101-starter/mdc_100_series ディレクトリにあります。</p>
+<h2 is-upgraded><strong>GitHub からクローンする</strong></h2>
+<p>GitHub からこの Codelab のクローンを作成するには、次のコマンドを実行します。</p>
+<pre>git clone https://github.com/material-components/material-components-flutter-codelabs.git
+cd material-components-flutter-codelabs/mdc_100_series
+git checkout 102-starter_and_101-complete</pre>
+<aside class="warning"><p>さらにヘルプが必要な場合: <a href="https://help.github.com/articles/cloning-a-repository/" target="_blank">GitHub からリポジトリを複製する</a></p>
+</aside>
+<aside class="special"><p><strong>ブランチについて</strong></p>
+<p>Codelabs MDC-101 から 104 は、相互に連続して構築されます。 つまり、102 のコードが完成すると、103 のスターター コードになります。 コードはさまざまなブランチに分割されており、次のコマンドですべてを一覧表示できます。</p>
+<p>git branch --list</p>
+<p>完成したコードを確認するには、103-starter_and_102-complete ブランチをチェックアウトしてください。</p>
+</aside>
+<h2 is-upgraded><strong>プロジェクトを開いてアプリを実行する</strong></h2>
+<ol type="1" start="1">
+<li>選択したエディターでプロジェクトを開きます。</li>
+<li><a href="https://docs.flutter.dev/get-started/test-drive" target="_blank">Get Started: Test drive</a> の「Run the app」の指示に従って、選択したエディターを使用します。</li>
+</ol>
+<p>成功！ デバイスに MDC-101 Codelab の Shrine ログイン ページが表示されます。</p>
+<table>
+<tr><td colspan="1" rowspan="1"><p>Android</p>
+</td><td colspan="1" rowspan="1"><p>iOS</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p class="image-container"><img style="width: 298.00px" src="img/77c93e89ac594afe.png"></p>
+</td><td colspan="1" rowspan="1"><p class="image-container"><img style="width: 298.00px" src="img/679775b6deb65c3f.png"></p>
+</td></tr>
+</table>
+<p>ログイン画面が適切に表示されたので、アプリにいくつかの製品を入力してみましょう。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="トップ アプリ バーを追加する" duration="0">
+        <p>ここで、「次へ」ボタンをクリックすると、「You did it!」というホーム画面が表示されます。 それは素晴らしいことです！ しかし今、ユーザーは何もする必要がなく、アプリ内のどこにいるのかわかりません。 それを支援するために、ナビゲーションを追加します。</p>
+<aside class="special"><p><strong>ナビゲーション</strong>とは、ユーザーがアプリ内を移動できるようにするコンポーネント、相互作用、視覚的な合図、および情報アーキテクチャを指します。 コンテンツや機能を見つけやすくして、タスクを簡単に完了できるようにします。</p>
+<p>詳しくは、マテリアル ガイドラインの<a href="https://material.io/design/navigation/" target="_blank">ナビゲーション記事</a>をご覧ください。</p>
+</aside>
+<p>マテリアル デザインは、高度な使いやすさを保証するナビゲーション パターンを提供します。 最も目立つコンポーネントの 1 つは、上部のアプリ バーです。</p>
+<aside class="special"><p>上部のアプリ バーは、iOS では &#34;ナビゲーション バー&#34;、または単に &#34;アプリ バー&#34; または &#34;ヘッダー&#34; として認識されている場合があります。</p>
+</aside>
+<p>ナビゲーションを提供し、ユーザーが他のアクションにすばやくアクセスできるようにするために、トップ アプリ バーを追加しましょう。</p>
+<h2 is-upgraded><strong>AppBar ウィジェットを追加する</strong></h2>
+<p><strong>home.dart</strong> で、AppBar を Scaffold に追加し、強調表示された <strong>const</strong> を削除します。</p>
+<pre>return const Scaffold(
+  // TODO: Add app bar (102)
+  appBar: AppBar(
+    // TODO: Add buttons and title (102)
+  ),</pre>
+<p><strong>AppBar</strong> を Scaffold の <strong>appBar</strong>: フィールドに追加すると、自由で完璧なレイアウトが得られ、AppBar をページの上部に、本文をその下に配置できます。</p>
+<aside class="special"><p><strong>Scaffold</strong> は MaterialApps の重要なウィジェットです。ドローアー、スナックバー、ボトムシートなど、あらゆる種類または一般的なマテリアル コンポーネントを表示するための便利な API を提供します。 フローティング アクション ボタンのレイアウトにも役立ちます。</p>
+<p>Scaffold の詳細については、<a href="https://api.flutter.dev/flutter/material/Scaffold-class.html" target="_blank">Flutter のドキュメント</a>をご覧ください。</p>
+</aside>
+<p>プロジェクトを保存します。 Shrine アプリが更新されたら、[次へ] をクリックしてホーム画面を表示します。</p>
+<table>
+<tr><td colspan="1" rowspan="1"><p>Android</p>
+</td><td colspan="1" rowspan="1"><p>iOS</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p class="image-container"><img style="width: 298.00px" src="img/fdda22f7ad3e128a.png"></p>
+</td><td colspan="1" rowspan="1"><p class="image-container"><img style="width: 298.00px" src="img/7aac9159c56aa110.png"></p>
+</td></tr>
+</table>
+<p>AppBar は見栄えがしますが、タイトルが必要です。</p>
+<h2 is-upgraded><strong>テキスト ウィジェットを追加する</strong></h2>
+<p><strong>home.dart</strong> で、タイトルを AppBar に追加します。</p>
+<pre>// TODO: Add app bar (102)
+  appBar: AppBar(
+    // TODO: Add buttons and title (102)
+    title: const Text(&#39;SHRINE&#39;),
+    // TODO: Add trailing buttons (102)</pre>
+<p>プロジェクトを保存します。</p>
+<table>
+<tr><td colspan="1" rowspan="1"><p>Android</p>
+</td><td colspan="1" rowspan="1"><p>iOS</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p class="image-container"><img style="width: 298.00px" src="img/e45285cdb72b486d.png"></p>
+</td><td colspan="1" rowspan="1"><p class="image-container"><img style="width: 298.00px" src="img/392491678976939f.png"></p>
+</td></tr>
+</table>
+<aside class="special"><p>ここまでで、「プラットフォームの差異」と呼ばれるものに気付いたかもしれません。 マテリアルは、Android、iOS、Web の各プラットフォームが異なることを知っています。 そして、ユーザーは彼らに対してさまざまな期待を持っています。 たとえば、iOS では、ほとんどの場合、タイトルは中央に配置されます。これは、UIKit によって提供されるデフォルトの動作です。 Android では、左揃えです。 そのため、Android エミュレーターまたはデバイスを使用している場合、タイトルは左揃えにする必要があります。 iOS シミュレーターまたはデバイスの場合は、中央に配置する必要があります。</p>
+<p>詳細については、<a href="https://material.io/design/platform-guidance/cross-platform-adaptation.html#cross-platform-guidelines" target="_blank">クロスプラットフォームの適応に関する資料記事</a>を参照してください。</p>
+</aside>
+<p>多くのアプリ バーには、タイトルの横にボタンがあります。 アプリにメニュー アイコンを追加しましょう。</p>
+<h2 is-upgraded><strong>先頭の IconButton を追加する</strong></h2>
+<p><strong>home.dart</strong> にいる間に、AppBar の <strong>leading</strong>: フィールドに IconButton を設定します。 ( <strong>title</strong>: フィールドの前に配置して、先頭から末尾への順序を模倣します):</p>
+<pre>    // TODO: Add buttons and title (102)
+    leading: IconButton(
+      icon: const Icon(
+        Icons.menu,
+        semanticLabel: &#39;menu&#39;,
+      ),
+      onPressed: () {
+        print(&#39;Menu button&#39;);
+      },
+    ),</pre>
+<p>プロジェクトを保存します。</p>
+<table>
+<tr><td colspan="1" rowspan="1"><p>Android</p>
+</td><td colspan="1" rowspan="1"><p>iOS</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p class="image-container"><img style="width: 298.00px" src="img/794577d0ea758040.png"></p>
+</td><td colspan="1" rowspan="1"><p class="image-container"><img style="width: 298.00px" src="img/598cf2815d829b9b.png"></p>
+</td></tr>
+</table>
+<p>メニュー アイコン (「ハンバーガー」とも呼ばれます) は、期待どおりの場所に表示されます。</p>
+<aside class="special"><p><a href="https://api.flutter.dev/flutter/material/IconButton-class.html" target="_blank"><strong>IconButton</strong></a> クラスは、<a href="http://material.io/icons" target="_blank">マテリアル アイコン</a>をアプリに組み込む便利な方法です。 <strong>Icon</strong> ウィジェットを使用します。 Flutter には、<strong>Icons</strong> クラスにアイコンのコレクション全体があります。 const 文字列のマッピングに基づいてアイコンを自動的にインポートします。</p>
+<p><a href="https://api.flutter.dev/flutter/material/Icons-class.html" target="_blank">Flutter のドキュメント</a>で Icons クラスの詳細を確認してください。 アイコン ウィジェットの詳細については、<a href="https://api.flutter.dev/flutter/widgets/Icon-class.html" target="_blank">Flutter のドキュメント</a>をご覧ください。</p>
+</aside>
+<p>タイトルの末尾にボタンを追加することもできます。 Flutter では、これらを「アクション」と呼びます。</p>
+<aside class="special"><p><strong>Leading</strong> と <strong>trailing</strong> は方向を表す用語で、言語に依存しない方法でテキスト行の開始と終了を指します。 英語のような LTR (左から右) 言語で作業する場合、先頭は左を意味し、末尾は右を意味します。 アラビア語のような RTL (右から左) 言語では、先頭は右を意味し、末尾は左を意味します。</p>
+<p>UI ミラーリングの詳細については、<a href="https://material.io/guidelines/usability/bidirectionality.html" target="_blank">双方向性に関するマテリアル デザイン ガイドライン</a>を参照してください。</p>
+</aside>
+<h2 is-upgraded><strong>アクションを追加</strong></h2>
+<p>さらに 2 つの IconButtons 用のスペースがあります。</p>
+<p>タイトルの後に AppBar インスタンスに追加します。</p>
+<pre>// TODO: Add trailing buttons (102)
+actions: &lt;Widget&gt;[
+  IconButton(
+    icon: const Icon(
+      Icons.search,
+      semanticLabel: &#39;search&#39;,
+    ),
+    onPressed: () {
+      print(&#39;Search button&#39;);
+    },
+  ),
+  IconButton(
+    icon: const Icon(
+      Icons.tune,
+      semanticLabel: &#39;filter&#39;,
+    ),
+    onPressed: () {
+      print(&#39;Filter button&#39;);
+    },
+  ),
+],</pre>
+<p>プロジェクトを保存します。 ホーム画面は次のようになります。</p>
+<table>
+<tr><td colspan="1" rowspan="1"><p>Android</p>
+</td><td colspan="1" rowspan="1"><p>iOS</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p class="image-container"><img style="width: 298.00px" src="img/d3a33ae1359e9801.png"></p>
+</td><td colspan="1" rowspan="1"><p class="image-container"><img style="width: 298.00px" src="img/a383f4dcd3267d2a.png"></p>
+</td></tr>
+</table>
+<p>これで、アプリの右側に先頭のボタン、タイトル、および 2 つのアクションが表示されます。 アプリ バーには、コンテンツとは異なるレイヤー上にあることを示す微妙な影を使用して標高も表示されます。</p>
+<aside class="special"><p>Icon クラスでは、<strong>SemanticLabel</strong> フィールドは、Flutter でアクセシビリティ情報を追加する一般的な方法です。 これは、<a href="https://support.google.com/accessibility/android/answer/7158690" target="_blank">Android のコンテンツ ラベル</a>や <a href="https://developer.apple.com/documentation/uikit/accessibility/uiaccessibility?language=objc" target="_blank">iOS の UIAccessibility</a> accessibilityLabel によく似ています。 多くのクラスでそれを見つけることができます。</p>
+<p>このフィールドの情報は、スクリーン リーダーを使用しているユーザーに対してこのボタンが何をするかをよりよく説明しています</p>
+<p>semanticLabel: フィールドを持たないウィジェットの場合は、それをセマンティクス ウィジェットでラップできます。 セマンティクス ウィジェットの詳細については、<a href="https://api.flutter.dev/flutter/widgets/Semantics-class.html" target="_blank">Flutter のドキュメント</a>をご覧ください。</p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="グリッドにカードを追加する" duration="0">
+        <p>アプリにある程度の構造ができたので、コンテンツをカードに配置して整理しましょう。</p>
+<aside class="special"><p><strong>カード</strong>は、1 つの主題に関するコンテンツとアクションを表示する独立した要素です。 これらは、類似したコンテンツをコレクションとして提示するための柔軟な方法です。</p>
+<p>カードの詳細については、マテリアル ガイドラインの<a href="https://material.io/guidelines/components/cards.html" target="_blank">カードの記事</a>をご覧ください。</p>
+<p>カード ウィジェットの詳細については、<a href="https://docs.flutter.dev/development/ui/layout" target="_blank">Flutter でレイアウトを構築する</a>をご覧ください。</p>
+</aside>
+<h2 is-upgraded><strong>GridView を追加する</strong></h2>
+<p>上部のアプリ バーの下に 1 つのカードを追加することから始めましょう。 <strong>カード</strong> ウィジェットだけでは、表示できる場所に配置するのに十分な情報がないため、<strong>GridView</strong> ウィジェットにカプセル化する必要があります。</p>
+<p>Scaffold の本体の Center を GridView に置き換えます。</p>
+<pre>// TODO: Add a grid view (102)
+body: GridView.count(
+  crossAxisCount: 2,
+  padding: const EdgeInsets.all(16.0),
+  childAspectRatio: 8.0 / 9.0,
+  // TODO: Build a grid of cards (102)
+  children: &lt;Widget&gt;[Card()],
+),</pre>
+<p>そのコードをみてみましょう。 GridView は <strong>count()</strong> コンストラクターを呼び出します。これは、表示される項目の数がカウント可能で無限ではないためです。 ただし、レイアウトを定義するにはいくつかの情報が必要です。</p>
+<p><strong>crossAxisCount</strong>: 横断するアイテムの数を指定します。 2 つの列が必要です。</p>
+<aside class="special"><p>Flutter の<strong>クロス軸（Cross axis）</strong>とは、非スクロール軸を意味します。 スクロール方向は<strong>主軸（main axis）</strong>と呼ばれます。 したがって、GridView が既定で行うように、垂直スクロールがある場合、交差軸は水平になります。</p>
+<p>詳細については、<a href="https://docs.flutter.dev/development/ui/layout" target="_blank">レイアウトの構築</a>をご覧ください。</p>
+</aside>
+<p><strong>padding</strong>: フィールドは、GridView の 4 つの側面すべてにスペースを提供します。 もちろん、横に GridView の子がまだないため、末尾または下側のパディングは表示されません。</p>
+<p><strong>childAspectRatio</strong>: フィールドは、縦横比 (幅と高さ) に基づいてアイテムのサイズを識別します。</p>
+<p>既定では、GridView はすべて同じサイズのタイルを作成します。</p>
+<p>カードは 1 枚ありますが、空です。 カードに子ウィジェットを追加しましょう。</p>
+<h2 is-upgraded><strong>コンテンツをレイアウトする</strong></h2>
+<p>カードには、画像、タイトル、およびセカンダリ テキスト用の領域が必要です。</p>
+<p>GridView の子を更新します。</p>
+<pre>// TODO: Build a grid of cards (102)
+children: &lt;Widget&gt;[
+  Card(
+    clipBehavior: Clip.antiAlias,
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: &lt;Widget&gt;[
+        AspectRatio(
+          aspectRatio: 18.0 / 11.0,
+          child: Image.asset(&#39;assets/diamond.png&#39;),
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: &lt;Widget&gt;[
+              Text(&#39;Title&#39;),
+              const SizedBox(height: 8.0),
+              Text(&#39;Secondary Text&#39;),
+            ],
+          ),
+        ),
+      ],
+    ),
+  )
+],</pre>
+<p>このコードは、子ウィジェットを垂直にレイアウトするために使用される <strong>Column</strong> ウィジェットを追加します。</p>
+<p><strong>crossAxisAlignment</strong>: フィールドは、「テキストをリーディング エッジに揃える」ことを意味する <strong>CrossAxisAlignment.start</strong> を指定します。</p>
+<p><strong>AspectRatio</strong> ウィジェットは、提供された画像の種類に関係なく、画像の形状を決定します。</p>
+<p><strong>Padding</strong> は、テキストを横から少し引き込みます。</p>
+<p>2 つの <strong>Text</strong> ウィジェットは、それらの間に 8 ポイントの空きスペース (<strong>SizedBox</strong>) を置いて垂直に積み重ねられます。 パディング内にそれらを収容する別の <strong>Column</strong> を作成します。</p>
+<p>プロジェクトを保存します。</p>
+<table>
+<tr><td colspan="1" rowspan="1"><p>Android</p>
+</td><td colspan="1" rowspan="1"><p>iOS</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p class="image-container"><img style="width: 298.00px" src="img/4ffb1e8e3bd8de3.png"></p>
+</td><td colspan="1" rowspan="1"><p class="image-container"><img style="width: 298.00px" src="img/3dd2be5afeb20072.png"></p>
+</td></tr>
+</table>
+<p>このプレビューでは、カードが端からはめ込まれ、角が丸く、影 (カードの高さを表す) があることがわかります。 全体の形状をマテリアルでは「コンテナ」と呼びます。 (<a href="https://api.flutter.dev/flutter/widgets/Container-class.html" target="_blank">Container</a> と呼ばれる実際のウィジェット クラスと混同しないでください。)</p>
+<aside class="special"><p>コンテナを除いて、カード内のすべての要素は、マテリアルでは実際にはオプションです。 ヘッダー テキスト、サムネイルまたはアバター、小見出しテキスト、仕切り、さらにはボタンやアイコンを追加できます。</p>
+<p>カードの内容について詳しくは、マテリアル ガイドラインの<a href="https://material.io/guidelines/components/cards.html" target="_blank">カードの記事</a>をご覧ください。</p>
+</aside>
+<p>カードは通常、他のカードと一緒にコレクションとして表示されます。 それらをコレクションとしてグリッドに配置しましょう。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="カードコレクションを作る" duration="0">
+        <p>複数のカードが画面に表示される場合は常に、1 つまたは複数のコレクションにグループ化されます。 コレクション内のカードは同一平面上にあります。つまり、カードは互いに同じ静止高度を共有します (カードが持ち上げられたりドラッグされたりしない限り、ここでは行いません)。</p>
+<h2 is-upgraded><strong>カードのコレクションを生成する</strong></h2>
+<p>現在、Card は GridView の <strong>children</strong>: フィールドのインラインで構築されています。 これは、読みにくい多くのネストされたコードです。 必要な数の空のカードを生成できる関数に抽出して、カードのリストを返します。</p>
+<p><strong>build()</strong> 関数の上に新しいプライベート関数を作成します (アンダースコアで始まる関数はプライベート API であることを思い出してください)。</p>
+<pre>// TODO: Make a collection of cards (102)
+List&lt;Card&gt; _buildGridCards(int count) {
+  List&lt;Card&gt; cards = List.generate(
+    count,
+    (int index) {
+      return Card(
+        clipBehavior: Clip.antiAlias,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: &lt;Widget&gt;[
+            AspectRatio(
+              aspectRatio: 18.0 / 11.0,
+              child: Image.asset(&#39;assets/diamond.png&#39;),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const &lt;Widget&gt;[
+                  Text(&#39;Title&#39;),
+                  SizedBox(height: 8.0),
+                  Text(&#39;Secondary Text&#39;),
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
+    },
+  );
+  return cards;
+}</pre>
+<p>生成されたカードを GridView の <strong>children</strong> フィールドに割り当てます。 <strong>GridView に含まれるすべてを次の新しいコードに置き換えること</strong>を忘れないでください。</p>
+<pre>// TODO: Add a grid view (102)
+body: GridView.count(
+  crossAxisCount: 2,
+  padding: const EdgeInsets.all(16.0),
+  childAspectRatio: 8.0 / 9.0,
+  children: _buildGridCards(10) // Replace
+),</pre>
+<p>プロジェクトを保存します。</p>
+<table>
+<tr><td colspan="1" rowspan="1"><p>Android</p>
+</td><td colspan="1" rowspan="1"><p>iOS</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p class="image-container"><img style="width: 298.00px" src="img/80f9295ef83cd7dd.png"></p>
+</td><td colspan="1" rowspan="1"><p class="image-container"><img style="width: 298.00px" src="img/3fcdcd16de1258b0.png"></p>
+</td></tr>
+</table>
+<p>カードはありますが、まだ何も表示されていません。 ここで、製品データを追加します。</p>
+<h2 is-upgraded><strong>商品データを追加する</strong></h2>
+<p>このアプリには、画像、名前、価格が記載された製品がいくつかあります。 カードにすでにあるウィジェットにそれを追加しましょう</p>
+<p>次に、<strong>home.dart</strong> で、データ モデル用に提供した新しいパッケージといくつかのファイルをインポートします。</p>
+<pre>import &#39;package:flutter/material.dart&#39;;
+import &#39;package:intl/intl.dart&#39;;
+
+import &#39;model/product.dart&#39;;
+import &#39;model/products_repository.dart&#39;;</pre>
+<p>最後に、<strong>_buildGridCards()</strong> を変更して製品情報を取得し、そのデータをカードで使用します。</p>
+<pre>// TODO: Make a collection of cards (102)
+
+// Replace this entire method
+List&lt;Card&gt; _buildGridCards(BuildContext context) {
+  List&lt;Product&gt; products = ProductsRepository.loadProducts(Category.all);
+
+  if (products.isEmpty) {
+    return const &lt;Card&gt;[];
+  }
+
+  final ThemeData theme = Theme.of(context);
+  final NumberFormat formatter = NumberFormat.simpleCurrency(
+      locale: Localizations.localeOf(context).toString());
+
+  return products.map((product) {
+    return Card(
+      clipBehavior: Clip.antiAlias,
+      // TODO: Adjust card heights (103)
+      child: Column(
+        // TODO: Center items on the card (103)
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: &lt;Widget&gt;[
+          AspectRatio(
+            aspectRatio: 18 / 11,
+            child: Image.asset(
+              product.assetName,
+              package: product.assetPackage,
+             // TODO: Adjust the box size (102)
+            ),
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 8.0),
+              child: Column(
+               // TODO: Align labels to the bottom and center (103)
+               crossAxisAlignment: CrossAxisAlignment.start,
+                // TODO: Change innermost Column (103)
+                children: &lt;Widget&gt;[
+                 // TODO: Handle overflowing labels (103)
+                 Text(
+                    product.name,
+                    style: theme.textTheme.headline6,
+                    maxLines: 1,
+                  ),
+                  const SizedBox(height: 8.0),
+                  Text(
+                    formatter.format(product.price),
+                    style: theme.textTheme.subtitle2,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }).toList();
+}</pre>
+<p><strong>注</strong>: まだコンパイルおよび実行されません。 もう1つ変更があります。</p>
+<aside class="special"><p>Text のスタイルを設定するには、現在の <strong>BuildContext</strong> の <strong>ThemeData</strong> を使用します。</p>
+<p>テキスト スタイルの詳細については、マテリアル ガイドラインの<a href="https://material.io/design/typography/" target="_blank">タイポグラフィの記事</a>を参照してください。 Theming の詳細については、<a href="https://codelabs.developers.google.com/codelabs/mdc-103-flutter" target="_blank">MDC-103: Material Theming with Color、Shape、Elevation、Type</a> のこの Codelab の後に進んでください。</p>
+</aside>
+<p>また、コンパイルを試みる前に <strong>BuildContext</strong> を <strong>_buildGridCards()</strong> に渡すように <strong>build()</strong> 関数を変更します。</p>
+<pre>// TODO: Add a grid view (102)
+body: GridView.count(
+  crossAxisCount: 2,
+  padding: const EdgeInsets.all(16.0),
+  childAspectRatio: 8.0 / 9.0,
+  children: _buildGridCards(context) // Changed code
+),</pre>
+<p>アプリをホット リスタートします。</p>
+<table>
+<tr><td colspan="1" rowspan="1"><p>Android</p>
+</td><td colspan="1" rowspan="1"><p>iOS</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p class="image-container"><img style="width: 298.00px" src="img/5e00c256e1c3c9f4.png"></p>
+</td><td colspan="1" rowspan="1"><p class="image-container"><img style="width: 298.00px" src="img/5afa8b0e625e6b0c.png"></p>
+</td></tr>
+</table>
+<p>カード間に垂直方向のスペースを追加していないことに気付くかもしれません。 これは、デフォルトで上下に 4 ポイントのパディングがあるためです。</p>
+<p>プロジェクトを保存します。</p>
+<p>商品データは表示されますが、画像の周りに余分なスペースがあります。 画像は、デフォルトで <strong>.scaleDown</strong> の <strong>BoxFit</strong> で描画されます (この場合)。 これを <strong>.fitWidth</strong> に変更して、少し拡大して余分な空白を削除しましょう。</p>
+<p><strong>BoxFit.fitWidth</strong> の値を持つ画像に <strong>fit:</strong> フィールドを追加します。</p>
+<pre>  // TODO: Adjust the box size (102)
+  fit: BoxFit.fitWidth,</pre>
+<table>
+<tr><td colspan="1" rowspan="1"><p>Android</p>
+</td><td colspan="1" rowspan="1"><p>iOS</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p class="image-container"><img style="width: 298.00px" src="img/219fcb9db8bad064.png"></p>
+</td><td colspan="1" rowspan="1"><p class="image-container"><img style="width: 298.00px" src="img/dd79d882e2422adb.png"></p>
+</td></tr>
+</table>
+<p>当社の製品がアプリに完全に表示されるようになりました!</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="おめでとう！" duration="0">
+        <p>私たちのアプリには、ユーザーがログイン画面から製品を表示できるホーム画面に移動する基本的なフローがあります。 わずか数行のコードで、トップ アプリ バー (タイトルと 3 つのボタンを含む) とカード (アプリのコンテンツを表示するため) を追加しました。 ホーム画面は、基本的な構造と実用的なコンテンツを備えた、シンプルで機能的なものになりました。</p>
+<aside class="special"><p>完成した MDC-102 アプリは、103-starter_and_102-complete ブランチで入手できます。</p>
+<p>そのブランチのアプリに対してページのバージョンをテストできます。</p>
+</aside>
+<h2 is-upgraded><strong>次のステップ</strong></h2>
+<p>上部のアプリ バー、カード、テキスト フィールド、ボタンで、MDC-Flutter ライブラリの 4 つのコア コンポーネントを使用しました。 <a href="https://docs.flutter.dev/development/ui/widgets" target="_blank">Flutter ウィジェット カタログ</a>にアクセスすると、さらに多くのコンポーネントを調べることができます。</p>
+<p>アプリは完全に機能していますが、まだ特定のブランドや視点を表現していません。 <a href="https://codelabs.developers.google.com/codelabs/mdc-103-flutter" target="_blank">MDC-103: 色、形状、高さ、タイプを使用したマテリアル デザインのテーマ</a>では、これらのコンポーネントのスタイルをカスタマイズして、活気に満ちたモダンなブランドを表現します。</p>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/codelab-elements/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/prettify.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/codelab-elements.js"></script>
+  <script src="//support.google.com/inapp/api.js"></script>
+
+</body>
+</html>
